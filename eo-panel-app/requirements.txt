@@ -1,0 +1,6 @@
+bokeh==3.1.1
+holoviews==1.16.0a2
+numpy==1.23.5
+panel==1.0.0rc7
+scikit_image==0.19.3
+xarray==2022.11.0
