@@ -6,12 +6,11 @@
 
 A simple Panel dashboard exploring all available Sentinel-2 L1C data (2022, max cloud coverage <= 5%) for my small municipality. This dashboard was built to test the new features of the upcoming Panel release.
 
-![img](https://raw.githubusercontent.com/ivandorte/eo-scripts-apps/eo-panel-app/main/images/dashboard.png)
+![img](https://github.com/ivandorte/eo-notebooks-apps/blob/main/eo-panel-app/images/dashboard.png)
 
 ## Data
 
-Sentinel-2 L1C imagery acquired via [sentinelhub-py](https://sentinelhub-py.readthedocs.io) on 2023-05-02.
-Copyright: This dashboard contains modified Copernicus Sentinel data (2022)/Sentinel Hub.
+Sentinel-2 L1C imagery acquired via [sentinelhub-py](https://sentinelhub-py.readthedocs.io) on 2023-05-02. Copyright: This dashboard contains modified Copernicus Sentinel data (2022)/Sentinel Hub.
 
 ## Band combinations & spectral indices
 
@@ -24,7 +23,7 @@ To run this dashboard you will need to do the following steps:
 
 1. Git clone this repository:
 
-`git clone https://github.com/ivandorte/eo-scripts-apps.git`
+`git clone git@github.com:ivandorte/eo-notebooks-apps.git`
 
 `cd eo-notebooks-apps/eo-panel-app`
 
@@ -40,11 +39,11 @@ The dashboard will be available in your web browser!!!
 
 ## Problems/Questions
 
-- Images axes unlinked when a selector is applied.
-- (Swipe) After/before images unlinked when a selector is applied.
-- (Swipe) Image Tooltip partially or totally covered when hovering near the slider.
+- Images axes unlinked when a selector is applied (TODO: video).
+- (Swipe) After/before images unlinked when a selector is applied (TODO: video).
+- (Swipe) Image Tooltip partially or totally covered when hovering near the slider (TODO: video).
 - (FloatPanel) How to show a FloatPanel in the same data app on button click?
-- (ToggleGroup) How to show a tootip when hovering over buttons?
+- (ToggleGroup) How to show a tootip when hovering over buttons? (TODO: example)
 
 ## References
 
