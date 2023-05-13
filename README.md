@@ -45,6 +45,9 @@ The dashboard will be available in your web browser!!!
 - (FloatPanel) How to show a FloatPanel in the same data app on button click?
 - (ToggleGroup) How to show a tootip when hovering over buttons? (TODO: example)
 
+## To do
+- Reorganize the code into modules.
+
 ## References
 
 - [HoloViz](https://holoviz.org/)
