@@ -69,7 +69,7 @@ https://github.com/ivandorte/eo-notebooks-apps/assets/1726395/9c7fd8a1-6646-4cde
 
 ![05](https://github.com/ivandorte/eo-notebooks-apps/assets/1726395/d66d101b-a886-4483-9195-691516c3e916)
 
-- (ToggleGroup) How to show a tootip when hovering over buttons? (Example):
+- (ToggleGroup) How to show a tooltip when hovering over buttons? (Example):
 
 ![04](https://github.com/ivandorte/eo-notebooks-apps/assets/1726395/96042ce2-83c8-441e-a107-1e46d62adf58)
 
