@@ -1,31 +1,45 @@
-# :satellite: EO DEMO: Sentinel-2 explorer
+# :satellite: eo-notebook-apps
+
+A collection of Python notebooks and applications related to Earth Observation (EO) sector.
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-## Description
+## Sentinel-2 notebooks
+
+Python notebooks used to download/process/analyze Sentinel-2 imagery.
+
+* [Download a single Sentinel-2 image (least cloudy acquisitions)](https://github.com/ivandorte/eo-notebooks-apps/blob/main/s2-notebooks/01a_download_single.ipynb)
+* [Download all Sentinel-2 images for a year (maxx=5%)](https://github.com/ivandorte/eo-notebooks-apps/blob/main/s2-notebooks/01b_download_multi.ipynb)
+* [Download all Sentinel-2 images for a year (maxx=5%) + cloud mask (CLM)](https://github.com/ivandorte/eo-notebooks-apps/blob/main/s2-notebooks/01c_download_multi_clm.ipynb)
+* [Write Sentinel-2 images (Tiff) to netcdf](https://github.com/ivandorte/eo-notebooks-apps/blob/main/s2-notebooks/02a_tiff_to_netcdf.ipynb)
+* [Write Sentinel-2 images (Tiff) to netcdf + cloud mask (CLM)](https://github.com/ivandorte/eo-notebooks-apps/blob/main/s2-notebooks/02b_tiff_to_netcdf_clm.ipynb)
+
+Link: [s2-notebooks](https://github.com/ivandorte/eo-notebooks-apps/tree/main/s2-notebooks)
+
+## Sentinel-2 explorer (DEMO)
 
 A simple Panel dashboard exploring all available Sentinel-2 L1C data (2022, max cloud coverage <= 5%) for my small municipality. This dashboard was built to test the new features of the upcoming Panel release.
 
-![img](https://github.com/ivandorte/eo-notebooks-apps/blob/main/eo-panel-app/images/dashboard.png)
+![img](https://github.com/ivandorte/eo-notebooks-apps/blob/main/s2-panel-app/images/dashboard.png)
 
-## Data
+### Data
 
 Sentinel-2 L1C imagery acquired via [sentinelhub-py](https://sentinelhub-py.readthedocs.io) on 2023-05-02. Copyright: This dashboard contains modified Copernicus Sentinel data (2022)/Sentinel Hub.
 
-## Band combinations & spectral indices
+### Band combinations & spectral indices
 
 - [sentinelhub: Collection of custom scripts](https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/sentinel-2/)
 - [Sentinel 2 Bands and Combinations](https://gisgeography.com/sentinel-2-bands-combinations/)
 - [List of band combinations in Sentinel 2](https://giscrack.com/list-of-band-combinations-in-sentinel-2a/)
 
-## Set up
+### Set up
 To run this dashboard you will need to do the following steps:
 
 1. Git clone this repository:
 
 `git clone git@github.com:ivandorte/eo-notebooks-apps.git`
 
-`cd eo-notebooks-apps/eo-panel-app`
+`cd eo-notebooks-apps/s2-panel-app`
 
 2. Install the required Python packages:
 
@@ -37,7 +51,7 @@ To run this dashboard you will need to do the following steps:
 
 The dashboard will be available in your web browser!!!
 
-## Problems/Questions
+### Problems/Questions
 
 - Images axes unlinked when a selector is applied (TODO: video).
 - (Swipe) After/before images unlinked when a selector is applied (TODO: video).
@@ -45,10 +59,14 @@ The dashboard will be available in your web browser!!!
 - (FloatPanel) How to show a FloatPanel in the same data app on button click?
 - (ToggleGroup) How to show a tootip when hovering over buttons? (TODO: example)
 
-## To do
+### To do
 - Reorganize the code into modules.
 
-## References
+Link: [s2-panel-app](https://github.com/ivandorte/eo-notebooks-apps/tree/main/s2-panel-app)
+
+---
+
+### References
 
 - [HoloViz](https://holoviz.org/)
 
@@ -58,7 +76,7 @@ The dashboard will be available in your web browser!!!
 
 - [Markdown Badges](https://github.com/Ileriayo/markdown-badges)
 
-## Authors
+### Authors
 
 - Ivan D'Ortenzio
 
