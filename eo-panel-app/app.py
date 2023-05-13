@@ -24,29 +24,29 @@ S2_SPINDICES = {
     "NDVI": {
         "name": "NDVI",
         "fullname": "Normalized difference vegetation index",
-        "band0": "B08",
-        "band1": "B04",
+        "b0": "B08",
+        "b1": "B04",
         "cmap": "RdYlGn",
     },
     "NDBI": {
         "name": "NDBI",
         "fullname": "Normalized Difference Built-up Index",
-        "band0": "B11",
-        "band1": "B08",
+        "b0": "B11",
+        "b1": "B08",
         "cmap": "Greys",
     },
     "NDMI": {
         "name": "NDMI",
         "fullname": "Normalized Difference Moisture Index",
-        "band0": "B8A",
-        "band1": "B11",
+        "b0": "B8A",
+        "b1": "B11",
         "cmap": "RdYlBu",
     },
     "NDWI": {
         "name": "NDWI",
         "fullname": "Normalized Difference Water Index",
-        "band0": "B03",
-        "band1": "B08",
+        "b0": "B03",
+        "b1": "B08",
         "cmap": "Blues",
     },
 }
@@ -92,7 +92,7 @@ def s2_contrast_stretch(in_data):
     return out_data
 
 
-def plot_true_color_image(in_data, time):
+def plot_true_color_image(in_data, time, mask_clouds):
     """
     A function that plots the True Color band combination.
     """
@@ -123,13 +123,26 @@ def plot_true_color_image(in_data, time):
     # Contrast stretching
     out_data.data = s2_contrast_stretch(out_data.data)
 
+    if mask_clouds:
+        # Assign a value of 255 to the pixels representing clouds
+        out_data = out_data.where(out_data.mask == 0, 255)
+
+    b0 = out_data.sel(band="B04").data
+    b1 = out_data.sel(band="B03").data
+    b2 = out_data.sel(band="B02").data
+
+    # Create masked arrays
+    b0_mask = np.ma.masked_where(b0 == 255, b0)
+    b1_mask = np.ma.masked_where(b1 == 255, b1)
+    b2_mask = np.ma.masked_where(b2 == 255, b2)
+
     # Plot the image
     plot_data = dict(
         x=out_data["x"],
         y=out_data["y"],
-        r=out_data.sel(band="B04").data,
-        g=out_data.sel(band="B03").data,
-        b=out_data.sel(band="B02").data,
+        r=b0_mask,
+        g=b1_mask,
+        b=b2_mask,
     )
 
     the_plot = hv.RGB(
@@ -160,7 +173,7 @@ def get_band_comb_text(band_comb):
     return band_comb_text
 
 
-def plot_s2_band_comb(in_data, time, band_comb):
+def plot_s2_band_comb(in_data, time, band_comb, mask_clouds):
     """
     A function that plots the selected band combination.
     """
@@ -191,13 +204,26 @@ def plot_s2_band_comb(in_data, time, band_comb):
     # Contrast stretching
     out_data.data = s2_contrast_stretch(out_data.data)
 
+    if mask_clouds:
+        # Assign a value of 255 to the pixels representing clouds
+        out_data = out_data.where(out_data.mask == 0, 255)
+
+    b0 = out_data.sel(band=band_comb[0]).data
+    b1 = out_data.sel(band=band_comb[1]).data
+    b2 = out_data.sel(band=band_comb[2]).data
+
+    # Create masked arrays
+    b0_mask = np.ma.masked_where(b0 == 255, b0)
+    b1_mask = np.ma.masked_where(b1 == 255, b1)
+    b2_mask = np.ma.masked_where(b2 == 255, b2)
+
     # Plot the image
     plot_data = dict(
         x=out_data["x"],
         y=out_data["y"],
-        r=out_data.sel(band=band_comb[0]).data,
-        g=out_data.sel(band=band_comb[1]).data,
-        b=out_data.sel(band=band_comb[2]).data,
+        r=b0_mask,
+        g=b1_mask,
+        b=b2_mask,
     )
 
     the_plot = hv.RGB(
@@ -215,20 +241,25 @@ def plot_s2_band_comb(in_data, time, band_comb):
     return the_plot
 
 
-def compute_s2_spindex(s2_spindex_name, band0, band1):
+def assign_spindex_to_cache(s2_spindex_name, spindex):
+    """
+    This function assign the spectral index array to the panel state cache
+    so that it can be used for the histogram floatpanel widget.
+    """
+    pn.state.cache["spindex"] = {"name": s2_spindex_name, "np_array": spindex}
+
+
+def compute_s2_spindex(b0, b1):
     """
     This function calculates the selected spectral index
     for the target image.
     """
-    spindex = (band0 - band1) / (band0 + band1)
-
-    # Assign the array to the cache so that it can be used for the histogram floatpanel
-    pn.state.cache["spindex"] = {"name": s2_spindex_name, "np_array": spindex}
+    spindex = (b0 - b1) / (b0 + b1)
 
     return spindex
 
 
-def plot_s2_spindex(in_data, time, s2_spindex):
+def plot_s2_spindex(in_data, time, s2_spindex, mask_clouds):
     """
     A function that plots the selected Sentinel-2 spectral index.
     """
@@ -263,12 +294,22 @@ def plot_s2_spindex(in_data, time, s2_spindex):
     )
 
     # Calculate the selected spectral index
-    band0 = out_data.sel(band=s2_spindex["band0"]).data
-    band1 = out_data.sel(band=s2_spindex["band1"]).data
-    plot_data = compute_s2_spindex(s2_spindex_name, band0, band1)
+    b0 = out_data.sel(band=s2_spindex["b0"]).data
+    b1 = out_data.sel(band=s2_spindex["b1"]).data
+    plot_data = compute_s2_spindex(b0, b1)
+
+    if mask_clouds:
+        # Assign a value of 255 to the pixels representing clouds
+        plot_data[out_data.mask == 1] = 255
+
+    # Create a masked array
+    plot_data_mask = np.ma.masked_where(plot_data == 255, plot_data)
+
+    # Assign this array to the pn.cache
+    assign_spindex_to_cache(s2_spindex_name, plot_data_mask)
 
     # Plot the computed spectral index
-    the_plot = hv.Image((out_data["x"], out_data["y"], plot_data)).opts(
+    the_plot = hv.Image((out_data["x"], out_data["y"], plot_data_mask)).opts(
         xlabel="",
         ylabel="",
         cmap=s2_spindex["cmap"],
@@ -279,7 +320,7 @@ def plot_s2_spindex(in_data, time, s2_spindex):
     )
 
     # Get the True Color Image
-    true_color = plot_true_color_image(in_data, time)
+    true_color = plot_true_color_image(in_data, time, mask_clouds)
 
     return pn.Swipe(true_color, the_plot)
 
@@ -295,6 +336,9 @@ def plot_s2_spindex_hist(event):
 
     spindex_name = spindex_cache["name"]
     spindex_array = spindex_cache["np_array"]
+
+    # Remove the masked values
+    spindex_array = spindex_array.compressed()
 
     # Calculates the histogram
     frequencies, edges = np.histogram(spindex_array, 20)
@@ -349,6 +393,14 @@ def create_s2_dashboard():
         options=S2_SPINDICES,
     )
 
+    # Histogram button
+    show_hist_bt = pn.widgets.Button(name="Show Histogram")
+    show_hist_bt.on_click(plot_s2_spindex_hist)
+
+    # Mask clouds Switch
+    swt_title = pn.widgets.StaticText(name="", value="Mask clouds?")
+    clm_switch = pn.widgets.Switch(name="Switch")
+
     # Bind plots to the selectors
     s2_band_comb_text_bind = pn.bind(
         get_band_comb_text,
@@ -360,6 +412,7 @@ def create_s2_dashboard():
         in_data=s2_data,
         time=time_select,
         band_comb=s2_band_comb_select,
+        mask_clouds=clm_switch,
     )
 
     s2_spindex_bind = pn.bind(
@@ -367,10 +420,8 @@ def create_s2_dashboard():
         in_data=s2_data,
         time=time_select,
         s2_spindex=s2_spindices_tg,
+        mask_clouds=clm_switch,
     )
-
-    show_hist_bt = pn.widgets.Button(name="Show Histogram")
-    show_hist_bt.on_click(plot_s2_spindex_hist)
 
     main_layout = pn.Row(
         pn.Column(s2_band_comb_bind, s2_band_comb_text_bind),
@@ -388,6 +439,8 @@ def create_s2_dashboard():
             s2_band_comb_select,
             tg_title,
             s2_spindices_tg,
+            swt_title,
+            clm_switch,
         ],
     )
 
