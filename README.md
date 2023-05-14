@@ -53,23 +53,23 @@ The dashboard will be available in your web browser!!!
 
 ### Problems/Questions
 
-- Images axes unlinked when a selector is applied:
+- Images axes unlinked when a selector is applied (Video)
 
 https://github.com/ivandorte/eo-notebooks-apps/assets/1726395/e47f35e7-4150-478b-be84-b5261b9a3e42
 
-- (Swipe) After/before images unlinked when a selector is applied:
+- (Swipe) After/before panels unlinked when a selector is applied (Video)
 
 https://github.com/ivandorte/eo-notebooks-apps/assets/1726395/748111fc-84e1-43cb-a0d9-8b6f16f985f0
 
-- (Swipe) Image Tooltip partially or totally covered when hovering near the slider:
+- (Swipe) Image Tooltip partially or totally covered when hovering near the slider (Video)
 
 https://github.com/ivandorte/eo-notebooks-apps/assets/1726395/9c7fd8a1-6646-4cde-95bb-63cfa731702d
 
-- (FloatPanel) How to show a FloatPanel in the same data app on button click (Example)?
+- (FloatPanel) How to show a FloatPanel in the same data app on button click? (Example)
 
 ![05](https://github.com/ivandorte/eo-notebooks-apps/assets/1726395/d66d101b-a886-4483-9195-691516c3e916)
 
-- (ToggleGroup) How to show a tooltip when hovering over buttons? (Example):
+- (ToggleGroup) How to show a tooltip when hovering over buttons? (Example)
 
 ![04](https://github.com/ivandorte/eo-notebooks-apps/assets/1726395/96042ce2-83c8-441e-a107-1e46d62adf58)
 

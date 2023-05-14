@@ -23,7 +23,7 @@ S2_BAND_COMB = {
 S2_SPINDICES = {
     "NDVI": {
         "name": "NDVI",
-        "fullname": "Normalized difference vegetation index",
+        "fullname": "Normalized Difference Vegetation Index",
         "b0": "B08",
         "b1": "B04",
         "cmap": "RdYlGn",
@@ -249,16 +249,6 @@ def assign_spindex_to_cache(s2_spindex_name, spindex):
     pn.state.cache["spindex"] = {"name": s2_spindex_name, "np_array": spindex}
 
 
-def compute_s2_spindex(b0, b1):
-    """
-    This function calculates the selected spectral index
-    for the target image.
-    """
-    spindex = (b0 - b1) / (b0 + b1)
-
-    return spindex
-
-
 def plot_s2_spindex(in_data, time, s2_spindex, mask_clouds):
     """
     A function that plots the selected Sentinel-2 spectral index.
@@ -296,7 +286,7 @@ def plot_s2_spindex(in_data, time, s2_spindex, mask_clouds):
     # Calculate the selected spectral index
     b0 = out_data.sel(band=s2_spindex["b0"]).data
     b1 = out_data.sel(band=s2_spindex["b1"]).data
-    plot_data = compute_s2_spindex(b0, b1)
+    plot_data = (b0 - b1) / (b0 + b1)
 
     if mask_clouds:
         # Assign a value of 255 to the pixels representing clouds
@@ -327,7 +317,7 @@ def plot_s2_spindex(in_data, time, s2_spindex, mask_clouds):
 
 def plot_s2_spindex_hist(event):
     """
-    TODO: Show the Histogram of the selected Sentinel-2 spectral index
+    TODO: Show the Histogram of the Sentinel-2 spectral index
     in a FloatPanel on button click.
     """
 
