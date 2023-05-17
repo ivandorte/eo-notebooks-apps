@@ -2,7 +2,11 @@ import holoviews as hv
 import panel as pn
 import xarray as xr
 from modules.constants import S2_BAND_COMB, S2_SPINDICES
-from modules.image_plots import plot_s2_band_comb, plot_s2_spindex
+from modules.image_plots import (
+    plot_s2_band_comb,
+    plot_s2_spindex,
+    plot_true_color_image,
+)
 from modules.image_statistics import plot_s2_spindex_hist
 
 # Load floatpanel extension
@@ -10,19 +14,6 @@ pn.extension("floatpanel")
 
 # Disable webgl: https://github.com/holoviz/panel/issues/4855
 hv.renderer("bokeh").webgl = False
-
-
-def get_band_comb_text(band_comb):
-    """
-    A function that return a StaticText showing
-    the selected band combination.
-    """
-
-    band_comb_text = pn.widgets.StaticText(
-        name="Band Combination", value=", ".join(band_comb)
-    )
-
-    return band_comb_text
 
 
 def create_s2_dashboard():
@@ -56,6 +47,14 @@ def create_s2_dashboard():
         options=S2_SPINDICES,
     )
 
+    # A StaticText showing the selected band combination
+    band_comb_text = pn.widgets.StaticText(
+        name="Band Combination", value=", ".join(S2_BAND_COMB["True Color"])
+    )
+
+    # Save the StaticText to the cache
+    pn.state.cache["band_text"] = band_comb_text
+
     # Create a placeholder for the FloatPanel
     placeholder = pn.Column(height=0, width=0)
 
@@ -70,10 +69,12 @@ def create_s2_dashboard():
     clm_title = pn.widgets.StaticText(name="", value="Mask clouds?")
     clm_switch = pn.widgets.Switch(name="Switch")
 
-    # Bind image plots and widgets to the selectors
-    s2_band_comb_text_bind = pn.bind(
-        get_band_comb_text,
-        band_comb=s2_band_comb_select,
+    # Bind image plots
+    s2_true_color_bind = pn.bind(
+        plot_true_color_image,
+        in_data=s2_data,
+        time=time_select,
+        mask_clouds=clm_switch,
     )
 
     s2_band_comb_bind = pn.bind(
@@ -92,10 +93,13 @@ def create_s2_dashboard():
         mask_clouds=clm_switch,
     )
 
+    # Use the Swipe tool to compare the spectral index with the true color image
+    spindex_truecolor_swipe = pn.Swipe(s2_true_color_bind, s2_spindex_bind)
+
     # Create the main layout
     main_layout = pn.Row(
-        pn.Column(s2_band_comb_bind, s2_band_comb_text_bind),
-        pn.Column(placeholder, s2_spindex_bind, show_hist_bt),
+        pn.Column(s2_band_comb_bind, band_comb_text),
+        pn.Column(placeholder, spindex_truecolor_swipe, show_hist_bt),
     )
 
     # Create the dashboard and turn into a deployable application

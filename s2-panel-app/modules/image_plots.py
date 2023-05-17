@@ -111,6 +111,9 @@ def plot_s2_band_comb(in_data, time, band_comb, mask_clouds):
                 tool.zoom_on_axis = False
                 break
 
+    # Update the StaticText showing the selected band combination
+    pn.state.cache["band_text"].value = ", ".join(band_comb)
+
     # Get the selected image and band combination
     out_data = in_data.sel(band=band_comb, time=time)
 
@@ -228,7 +231,4 @@ def plot_s2_spindex(in_data, time, s2_spindex, mask_clouds):
         frame_height=500,
     )
 
-    # Get the True Color Image
-    true_color = plot_true_color_image(in_data, time, mask_clouds)
-
-    return pn.Swipe(true_color, the_plot)
+    return the_plot
