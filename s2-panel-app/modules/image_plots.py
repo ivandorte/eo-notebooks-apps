@@ -3,6 +3,7 @@ import numpy as np
 import panel as pn
 from bokeh.models import CustomJSHover, HoverTool, WheelZoomTool
 from modules.image_processing import s2_contrast_stretch, s2_image_to_uint8
+from modules.image_statistics import enable_hist_refresh_bt
 
 # This function hide the tooltip when the pixel value is NaN
 HIDE_NAN_HOVTOOL = CustomJSHover(
@@ -111,9 +112,6 @@ def plot_s2_band_comb(in_data, time, band_comb, mask_clouds):
                 tool.zoom_on_axis = False
                 break
 
-    # Update the StaticText showing the selected band combination
-    pn.state.cache["band_text"].value = ", ".join(band_comb)
-
     # Get the selected image and band combination
     out_data = in_data.sel(band=band_comb, time=time)
 
@@ -219,6 +217,9 @@ def plot_s2_spindex(in_data, time, s2_spindex, mask_clouds):
 
     # Assign this array to the pn.cache
     assign_spindex_to_cache(s2_spindex_name, plot_data_mask)
+
+    # Enable the refresh button of the histogram plot
+    enable_hist_refresh_bt()
 
     # Plot the computed spectral index
     the_plot = hv.Image((out_data["x"], out_data["y"], plot_data_mask)).opts(

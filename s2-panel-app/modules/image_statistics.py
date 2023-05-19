@@ -4,6 +4,31 @@ import panel as pn
 from bokeh.models import WheelZoomTool
 from bokeh.models.formatters import NumeralTickFormatter
 
+# Create a placeholder for the FloatPanel
+HIST_PLACEHOLDER = pn.Column(height=0, width=0)
+
+# https://jspanel.de/#options
+FLOATPANEL_CONFIGS = {
+    "resizeit": {"disable": "true"},
+    "headerControls": "closeonly",
+    "closeOnEscape": "true",
+}
+
+# Save the histogram placeholder to the cache
+pn.state.cache["hist_placeholder"] = HIST_PLACEHOLDER
+pn.state.cache["hist_refresh_bt"] = []
+
+
+def enable_hist_refresh_bt():
+    """
+    This function enables the refresh button used to update the histogram plot
+    """
+
+    refresh_bt = pn.state.cache["hist_refresh_bt"]
+    if refresh_bt:
+        refresh_bt.button_type = "warning"
+        refresh_bt.disabled = False
+
 
 def plot_s2_spindex_hist(event):
     """
@@ -45,17 +70,23 @@ def plot_s2_spindex_hist(event):
         height=400,
     )
 
-    # https://jspanel.de/#options
-    config = {
-        "resizeit": {"disable": "true"},
-        "headerControls": "closeonly",
-        "closeOnEscape": "true",
-    }
+    # A button to refresh the histogram
+    refresh_bt = pn.widgets.Button(name="Refresh", icon="refresh")
+    refresh_bt.on_click(plot_s2_spindex_hist)
+    refresh_bt.disabled = True
+
+    # Assign the refresh button to the cache
+    pn.state.cache["hist_refresh_bt"] = refresh_bt
 
     # Embed the histogram in a FloatPanel
     float_hist = pn.layout.FloatPanel(
-        spindex_hist, contained=False, position="center", margin=20, config=config
+        spindex_hist,
+        refresh_bt,
+        contained=False,
+        position="center",
+        margin=20,
+        config=FLOATPANEL_CONFIGS,
     )
 
     # Show the dialog
-    pn.state.cache["placeholder"][:] = [float_hist]
+    pn.state.cache["hist_placeholder"][:] = [float_hist]

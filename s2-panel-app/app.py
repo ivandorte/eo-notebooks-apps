@@ -7,13 +7,26 @@ from modules.image_plots import (
     plot_s2_spindex,
     plot_true_color_image,
 )
-from modules.image_statistics import plot_s2_spindex_hist
+from modules.image_statistics import HIST_PLACEHOLDER, plot_s2_spindex_hist
 
-# Load floatpanel extension
+# Load the floatpanel extension
 pn.extension("floatpanel")
 
 # Disable webgl: https://github.com/holoviz/panel/issues/4855
 hv.renderer("bokeh").webgl = False
+
+
+def get_band_comb_text(band_comb):
+    """
+    A function that return a StaticText showing
+    the selected band combination.
+    """
+
+    band_comb_text = pn.widgets.StaticText(
+        name="Band Combination", value=", ".join(band_comb)
+    )
+
+    return band_comb_text
 
 
 def create_s2_dashboard():
@@ -47,29 +60,20 @@ def create_s2_dashboard():
         options=S2_SPINDICES,
     )
 
-    # A StaticText showing the selected band combination
-    band_comb_text = pn.widgets.StaticText(
-        name="Band Combination", value=", ".join(S2_BAND_COMB["True Color"])
-    )
-
-    # Save the StaticText to the cache
-    pn.state.cache["band_text"] = band_comb_text
-
-    # Create a placeholder for the FloatPanel
-    placeholder = pn.Column(height=0, width=0)
-
-    # Save the placeholder to the cache so that it can be used in the histogram function
-    pn.state.cache["placeholder"] = placeholder
-
-    # Histogram button
-    show_hist_bt = pn.widgets.Button(name="Show Histogram")
+    # Create histogram button
+    show_hist_bt = pn.widgets.Button(name="Create Histogram", icon="chart-histogram")
     show_hist_bt.on_click(plot_s2_spindex_hist)
 
     # Mask clouds Switch
     clm_title = pn.widgets.StaticText(name="", value="Mask clouds?")
     clm_switch = pn.widgets.Switch(name="Switch")
 
-    # Bind image plots
+    # Bind image plots and widgets to the selectors
+    s2_band_comb_text_bind = pn.bind(
+        get_band_comb_text,
+        band_comb=s2_band_comb_select,
+    )
+
     s2_true_color_bind = pn.bind(
         plot_true_color_image,
         in_data=s2_data,
@@ -98,8 +102,8 @@ def create_s2_dashboard():
 
     # Create the main layout
     main_layout = pn.Row(
-        pn.Column(s2_band_comb_bind, band_comb_text),
-        pn.Column(placeholder, spindex_truecolor_swipe, show_hist_bt),
+        pn.Column(s2_band_comb_bind, s2_band_comb_text_bind),
+        pn.Column(HIST_PLACEHOLDER, spindex_truecolor_swipe, show_hist_bt),
     )
 
     # Create the dashboard and turn into a deployable application

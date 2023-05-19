@@ -32,7 +32,12 @@ Sentinel-2 L1C imagery acquired via [sentinelhub-py](https://sentinelhub-py.read
 - [Sentinel 2 Bands and Combinations](https://gisgeography.com/sentinel-2-bands-combinations/)
 - [List of band combinations in Sentinel 2](https://giscrack.com/list-of-band-combinations-in-sentinel-2a/)
 
+### ToDo
+
+- [ ] Add a widget to select a pixel from the right image and a FloatPanel to show its spectral signature.
+
 ### Set up
+
 To run this dashboard you will need to do the following steps:
 
 1. Git clone this repository:
