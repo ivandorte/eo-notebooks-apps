@@ -34,7 +34,8 @@ Sentinel-2 L1C imagery acquired via [sentinelhub-py](https://sentinelhub-py.read
 
 ### ToDo
 
-- [ ] Add a widget to select a pixel from the right image and a FloatPanel to show its spectral signature.
+- [ ] Add an interactive plot that shows the spectral curve of the selected pixel.
+- [ ] Add an option to compare the spectral curve of the selected pixel with known spectral profiles (e.g vegetation, soil, water...)
 
 ### Set up
 
